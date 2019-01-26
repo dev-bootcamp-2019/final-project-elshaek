@@ -2,6 +2,8 @@
 
 ConsenSys Course Final Project
 
+[![Travis](https://travis-ci.org/dev-bootcamp-2019/final-project-elshaek.svg?branch=master)](https://travis-ci.org/dev-bootcamp-2019/final-project-elshaek)
+
 This decentralized application was developed as the final project for the [Consensys Academy developer program](https://consensys.net/academy/).
 
 ## What is Gather?
