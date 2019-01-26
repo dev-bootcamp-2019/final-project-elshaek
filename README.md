@@ -16,7 +16,6 @@ PARTICIPANTS - An individual or entity that takes part in a gathering
 
 This web app allows any individual or entity to organize a gathering, and allow anyone to request to join the gathering.
 
----
 ## Running the application
 1. Clone this repository
 2. In the repo root directory, run `ganache-cli`
@@ -25,7 +24,6 @@ This web app allows any individual or entity to organize a gathering, and allow 
 5. In the `client` directory, run `npm run start` 
 5. Interact with the application at [http://localhost:3000](http://localhost:3000)
 
----
 ## User Stories:
 
 ### Organizer
