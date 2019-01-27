@@ -28,7 +28,7 @@ contract Gather {
 
     event LogAdminAdded(address _address);
     event LogUserAdded(address _address);
-    event LogNewGathering(string _string);
+    event LogNewGathering(uint count, string _string);
     event LogGatheringJoined(string _string, address _address);
     event LogLeftGathering(string _string, address _address);
     event LogNameChange(string _string);
@@ -118,13 +118,13 @@ contract Gather {
         verifyUser(msg.sender)
         organizedGatheringBelowMax(users[msg.sender].gatheringCount)
         notEmpty(_name)
-        returns(string memory)
+        returns(uint, string memory)
     {
         Gathering memory g = Gathering({organizer: msg.sender, name: _name, participants: new address[](0), index: gatheringIndex.length});
         users[msg.sender].gatheringCount++;
         gatheringIndex.push(g);
-        emit LogNewGathering(g.name);
-        return g.name;
+        emit LogNewGathering(users[msg.sender].gatheringCount, g.name);
+        return(users[msg.sender].gatheringCount, g.name);
     }
 
     // The organizer can rename the gathering
