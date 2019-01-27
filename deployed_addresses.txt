@@ -1,0 +1,142 @@
+Network: rinkeby
+Contracts (Addresses): 
+- Migrations  (0xA8582343F03f0016eeCAeB94dAC42972a2c936D3)
+- StringUtils (0xA65c6d7d80980199027d36fd0890E4F10eb1cc8b)
+- Gather      (0x10438B6DBaB658EBd54f2cAf5C94848344c62777)
+
+Output from migration:
+Migrations dry-run (simulation)
+===============================
+> Network name:    'rinkeby-fork'
+> Network id:      4
+> Block gas limit: 7009131
+
+
+1_initial_migration.js
+======================
+
+   Deploying 'Migrations'
+   ----------------------
+   > account:             0x50732043E617aFA168De057EdED53987818aFe18
+   > balance:             21.736476124
+   > gas used:            269908
+   > gas price:           2 gwei
+   > value sent:          0 ETH
+   > total cost:          0.000539816 ETH
+
+   -------------------------------------
+   > Total cost:         0.000539816 ETH
+
+
+2_deploy_contracts.js
+=====================
+
+   Deploying 'StringUtils'
+   -----------------------
+   > account:             0x50732043E617aFA168De057EdED53987818aFe18
+   > balance:             21.735498092
+   > gas used:            461982
+   > gas price:           2 gwei
+   > value sent:          0 ETH
+   > total cost:          0.000923964 ETH
+
+
+   Linking
+   -------
+   * Contract: Gather <--> Library: StringUtils
+
+   Deploying 'Gather'
+   ------------------
+   > account:             0x50732043E617aFA168De057EdED53987818aFe18
+   > balance:             21.728731094
+   > gas used:            3383499
+   > gas price:           2 gwei
+   > value sent:          0 ETH
+   > total cost:          0.006766998 ETH
+
+   -------------------------------------
+   > Total cost:         0.007690962 ETH
+
+
+Summary
+=======
+> Total deployments:   3
+> Final cost:          0.008230778 ETH
+
+⚠️  Important ⚠️
+If you're using an HDWalletProvider, it must be Web3 1.0 enabled or your migration will hang.
+Try: npm install --save truffle-hdwallet-provider@web3-one
+
+
+Starting migrations...
+======================
+> Network name:    'rinkeby'
+> Network id:      4
+> Block gas limit: 7012637
+
+
+1_initial_migration.js
+======================
+
+   Deploying 'Migrations'
+   ----------------------
+   > transaction hash:    0x5dbe92812c574bf16098824719982d1918445382f0d5a7a5931049928b14ffc5
+   > Blocks: 3            Seconds: 49
+   > contract address:    0xA8582343F03f0016eeCAeB94dAC42972a2c936D3
+   > account:             0x50732043E617aFA168De057EdED53987818aFe18
+   > balance:             21.73131778
+   > gas used:            284908
+   > gas price:           20 gwei
+   > value sent:          0 ETH
+   > total cost:          0.00569816 ETH
+
+
+   > Saving migration to chain.
+   > Saving artifacts
+   -------------------------------------
+   > Total cost:          0.00569816 ETH
+
+
+2_deploy_contracts.js
+=====================
+
+   Deploying 'StringUtils'
+   -----------------------
+   > transaction hash:    0x9bfe09b2dc3c9209a278dd8f828e5cb41f9b0dfe733a1f3d42ba2a087ce78341
+   > Blocks: 1            Seconds: 9
+   > contract address:    0xA65c6d7d80980199027d36fd0890E4F10eb1cc8b
+   > account:             0x50732043E617aFA168De057EdED53987818aFe18
+   > balance:             21.72123746
+   > gas used:            461982
+   > gas price:           20 gwei
+   > value sent:          0 ETH
+   > total cost:          0.00923964 ETH
+
+
+   Linking
+   -------
+   * Contract: Gather <--> Library: StringUtils (at address: 0xA65c6d7d80980199027d36fd0890E4F10eb1cc8b)
+
+   Deploying 'Gather'
+   ------------------
+   > transaction hash:    0x0b601f0d195ac21e5c44fccb5b268b6a43506f793058b6458e27343d42d9fbec
+   > Blocks: 1            Seconds: 9
+   > contract address:    0x10438B6DBaB658EBd54f2cAf5C94848344c62777
+   > account:             0x50732043E617aFA168De057EdED53987818aFe18
+   > balance:             21.65155148
+   > gas used:            3484299
+   > gas price:           20 gwei
+   > value sent:          0 ETH
+   > total cost:          0.06968598 ETH
+
+
+   > Saving migration to chain.
+   > Saving artifacts
+   -------------------------------------
+   > Total cost:          0.07892562 ETH
+
+
+Summary
+=======
+> Total deployments:   3
+> Final cost:          0.08462378 ETH
