@@ -1,4 +1,20 @@
-The following is a list of known attacks which you should be aware of, and defend against when writing smart contracts.
+## Underflow in Depth: Storage Manipulation
+Example code from Gather.sol:
+```
+function removeGathering(uint index){
+    ...
+    require(index >= 0);
+    gatheringIndex[index] = lastIndexGathering;
+    ...
+
+    // Update organizer's gathering count
+    require(users[msg.sender].gatheringCount > 0);
+    users[msg.sender].gatheringCount--;
+    return true;
+}
+```
+
+# List of known attacks
 
 ## Reentrancy
 One of the major dangers of calling external contracts is that they can take over the control flow, and make changes to your data that the calling function wasn't expecting. This class of bug can take many forms, and both of the major bugs that led to the DAO's collapse were bugs of this sort.
@@ -55,106 +71,6 @@ In this case, the attacker calls transfer() when their code is executed on the e
 
 The same solutions will work, with the same caveats. Also note that in this example, both functions were part of the same contract. However, the same bug can occur across multiple contracts, if those contracts share state.
 
-### Pitfalls in Reentrancy Solutions
-Since reentrancy can occur across multiple functions, and even multiple contracts, any solution aimed at preventing reentrancy with a single function will not be sufficient.
-
-Instead, we have recommended finishing all internal work (ie. state changes) first, and only then calling the external function. This rule, if followed carefully, will allow you to avoid vulnerabilities due to reentrancy. However, you need to not only avoid calling external functions too soon, but also avoid calling functions which call external functions. For example, the following is insecure:
-
-```
-// INSECURE
-mapping (address => uint) private userBalances;
-mapping (address => bool) private claimedBonus;
-mapping (address => uint) private rewardsForA;
-
-function withdrawReward(address recipient) public {
-    uint amountToWithdraw = rewardsForA[recipient];
-    rewardsForA[recipient] = 0;
-    require(recipient.call.value(amountToWithdraw)());
-}
-
-function getFirstWithdrawalBonus(address recipient) public {
-    require(!claimedBonus[recipient]); // Each recipient should only be able to claim the bonus once
-
-    rewardsForA[recipient] += 100;
-    withdrawReward(recipient); // At this point, the caller will be able to execute getFirstWithdrawalBonus again.
-    claimedBonus[recipient] = true;
-}
-```
-Even though getFirstWithdrawalBonus() doesn't directly call an external contract, the call in withdrawReward() is enough to make it vulnerable to a reentrancy. You therefore need to treat withdrawReward() as if it were also untrusted.
-
-```
-mapping (address => uint) private userBalances;
-mapping (address => bool) private claimedBonus;
-mapping (address => uint) private rewardsForA;
-
-function untrustedWithdrawReward(address recipient) public {
-    uint amountToWithdraw = rewardsForA[recipient];
-    rewardsForA[recipient] = 0;
-    require(recipient.call.value(amountToWithdraw)());
-}
-
-function untrustedGetFirstWithdrawalBonus(address recipient) public {
-    require(!claimedBonus[recipient]); // Each recipient should only be able to claim the bonus once
-
-    claimedBonus[recipient] = true;
-    rewardsForA[recipient] += 100;
-    untrustedWithdrawReward(recipient); // claimedBonus has been set to true, so reentry is impossible
-}
-```
-In addition to the fix making reentry impossible, untrusted functions have been marked. This same pattern repeats at every level: since untrustedGetFirstWithdrawalBonus() calls untrustedWithdrawReward(), which calls an external contract, you must also treat untrustedGetFirstWithdrawalBonus() as insecure.
-
-Another solution often suggested is a mutex. This allows you to "lock" some state so it can only be changed by the owner of the lock. A simple example might look like this:
-
-```
-// Note: This is a rudimentary example, and mutexes are particularly useful where there is substantial logic and/or shared state
-mapping (address => uint) private balances;
-bool private lockBalances;
-
-function deposit() payable public returns (bool) {
-    require(!lockBalances);
-    lockBalances = true;
-    balances[msg.sender] += msg.value;
-    lockBalances = false;
-    return true;
-}
-
-function withdraw(uint amount) payable public returns (bool) {
-    require(!lockBalances && amount > 0 && balances[msg.sender] >= amount);
-    lockBalances = true;
-
-    if (msg.sender.call(amount)()) { // Normally insecure, but the mutex saves it
-      balances[msg.sender] -= amount;
-    }
-
-    lockBalances = false;
-    return true;
-}
-```
-If the user tries to call withdraw() again before the first call finishes, the lock will prevent it from having any effect. This can be an effective pattern, but it gets tricky when you have multiple contracts that need to cooperate. The following is insecure:
-
-```
-// INSECURE
-contract StateHolder {
-    uint private n;
-    address private lockHolder;
-
-    function getLock() {
-        require(lockHolder == address(0));
-        lockHolder = msg.sender;
-    }
-
-    function releaseLock() {
-        require(msg.sender == lockHolder);
-        lockHolder = address(0);
-    }
-
-    function set(uint newState) {
-        require(msg.sender == lockHolder);
-        n = newState;
-    }
-}
-```
-An attacker can call getLock(), and then never call releaseLock(). If they do this, then the contract will be locked forever, and no further changes will be able to be made. If you use mutexes to protect against reentrancy, you will need to carefully ensure that there are no ways for a lock to be claimed and never released. (There are other potential dangers when programming with mutexes, such as deadlocks and livelocks. You should consult the large amount of literature already written on mutexes, if you decide to go this route.)
 
 ## Front Running (AKA Transaction-Ordering Dependence)
 Above were examples of reentrancy involving the attacker executing malicious code within a single transaction. The following are a different type of attack inherent to Blockchains: the fact that the order of transactions themselves (within a block) is easily subject to manipulation.
@@ -198,45 +114,6 @@ The same is true for underflow. If a uint is made to be less than zero, it will 
 Be careful with the smaller data-types like uint8, uint16, uint24...etc: they can even more easily hit their maximum value.
 
 Be aware there are around 20 cases for overflow and underflow.
-
-## Underflow in Depth: Storage Manipulation
-Doug Hoyte's submission to the 2017 underhanded solidity contest received an honorable mention. The entry is interesting, because it raises the concerns about how C-like underflow might affect Solidity storage. Here is a simplified version:
-
-```
-contract UnderflowManipulation {
-    address public owner;
-    uint256 public manipulateMe = 10;
-    function UnderflowManipulation() {
-        owner = msg.sender;
-    }
-
-    uint[] public bonusCodes;
-
-    function pushBonusCode(uint code) {
-        bonusCodes.push(code);
-    }
-
-    function popBonusCode()  {
-        require(bonusCodes.length >=0);  // this is a tautology
-        bonusCodes.length--; // an underflow can be caused here
-    }
-
-    function modifyBonusCode(uint index, uint update)  { 
-        require(index < bonusCodes.length);
-        bonusCodes[index] = update; // write to any index less than bonusCodes.length
-    }
-
-}
-```
-In general, the variable manipulateMe's location cannot be influenced without going through the keccak256, which is infeasible. However, since dynamic arrays are stored sequentially, if a malicious actor wanted to change manipulateMe all they would need to do is:
-
-Call popBonusCode to underflow (Note: array.pop() method was added in Solidity 0.5.0)
-Compute the storage location of manipulateMe
-Modify and update manipulateMe's value using modifyBonusCode
-In practice, this array would be immediately pointed out as fishy, but buried under more complex smart contract architecture, it can arbitrarily allow malicious changes to constant variables.
-
-When considering use of a dynamic array, a container data scructure is a good practice. The Solidity CRUD part 1 and part 2 articles are good resources.
-
 
 ## DoS with (Unexpected) revert
 Consider a simple auction contract:
