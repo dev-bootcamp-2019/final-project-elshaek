@@ -14,10 +14,11 @@ A simple application that allows any individual or entity to organize a gatherin
 1. Clone this repository
 2. In the repo root directory, run `ganache-cli`
 3. Still in the same directory, run `truffle migrate --reset`
-4. `cd client` and run `npm install` 
-5. In the `client` directory, run `npm run start` 
-6. Set metamask network to Localhost 8545
-7. Interact with the application at [http://localhost:3000](http://localhost:3000)
+4. import account to metamask using seed phrase generated after running `ganache-cli`
+5. `cd client` and run `npm install` 
+6. In the `client` directory, run `npm run start` 
+7. Set metamask network to Localhost 8545
+8. Interact with the application at [http://localhost:3000](http://localhost:3000)
 
 ## User Stories:
 - Contract owner is also an admin
