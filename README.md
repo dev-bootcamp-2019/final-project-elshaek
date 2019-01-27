@@ -16,7 +16,8 @@ A simple application that allows any individual or entity to organize a gatherin
 3. Still in the same directory, run `truffle migrate --reset`
 4. `cd client` and run `npm install` 
 5. In the `client` directory, run `npm run start` 
-5. Interact with the application at [http://localhost:3000](http://localhost:3000)
+6. Set metamask network to Localhost 8545
+7. Interact with the application at [http://localhost:3000](http://localhost:3000)
 
 ## User Stories:
 - Contract owner is also an admin
