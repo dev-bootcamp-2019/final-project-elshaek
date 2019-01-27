@@ -17422,6 +17422,121 @@
     "version": "0.5.0+commit.1d4f565a.Emscripten.clang"
   },
   "networks": {
+    "4": {
+      "events": {
+        "0x873b6546df550db4e197c19f621af58777f109107ed897212d3ab52d5a9f2ede": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "_address",
+              "type": "address"
+            }
+          ],
+          "name": "LogAdminAdded",
+          "type": "event",
+          "signature": "0x873b6546df550db4e197c19f621af58777f109107ed897212d3ab52d5a9f2ede"
+        },
+        "0x187047b56eb20e7a0313254e37dc60b8c1a9d25707114d2caaaee420b2b7ec23": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "_address",
+              "type": "address"
+            }
+          ],
+          "name": "LogUserAdded",
+          "type": "event",
+          "signature": "0x187047b56eb20e7a0313254e37dc60b8c1a9d25707114d2caaaee420b2b7ec23"
+        },
+        "0x3d30e143bc7105c6f61a763eaf49de50193c86d8dee427afe8de8a8cc39c7ddf": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "count",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "_string",
+              "type": "string"
+            }
+          ],
+          "name": "LogNewGathering",
+          "type": "event",
+          "signature": "0x3d30e143bc7105c6f61a763eaf49de50193c86d8dee427afe8de8a8cc39c7ddf"
+        },
+        "0xabaf8ccb8d157ccdbd12c46218c969688001139cff697e11270756c64f3e02fe": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "_string",
+              "type": "string"
+            },
+            {
+              "indexed": false,
+              "name": "_address",
+              "type": "address"
+            }
+          ],
+          "name": "LogGatheringJoined",
+          "type": "event",
+          "signature": "0xabaf8ccb8d157ccdbd12c46218c969688001139cff697e11270756c64f3e02fe"
+        },
+        "0x6a232fe59620d8d63f773cae432d2aaf20bc5373b0403dbb3bbf4d6dc5712798": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "_string",
+              "type": "string"
+            },
+            {
+              "indexed": false,
+              "name": "_address",
+              "type": "address"
+            }
+          ],
+          "name": "LogLeftGathering",
+          "type": "event",
+          "signature": "0x6a232fe59620d8d63f773cae432d2aaf20bc5373b0403dbb3bbf4d6dc5712798"
+        },
+        "0xdae5c6118bdacdb1a752359d2bdaec91973aa87c89a76a80b6d615293b9b3cfc": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "_string",
+              "type": "string"
+            }
+          ],
+          "name": "LogNameChange",
+          "type": "event",
+          "signature": "0xdae5c6118bdacdb1a752359d2bdaec91973aa87c89a76a80b6d615293b9b3cfc"
+        },
+        "0xe51c705409109ae79634c3a055806e976b0d64ba3930c634ff706e6a6c282121": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "_string",
+              "type": "string"
+            }
+          ],
+          "name": "LogDescriptionChange",
+          "type": "event",
+          "signature": "0xe51c705409109ae79634c3a055806e976b0d64ba3930c634ff706e6a6c282121"
+        }
+      },
+      "links": {
+        "StringUtils": "0xA65c6d7d80980199027d36fd0890E4F10eb1cc8b"
+      },
+      "address": "0x10438B6DBaB658EBd54f2cAf5C94848344c62777",
+      "transactionHash": "0x0b601f0d195ac21e5c44fccb5b268b6a43506f793058b6458e27343d42d9fbec"
+    },
     "1548621278073": {
       "events": {
         "0x873b6546df550db4e197c19f621af58777f109107ed897212d3ab52d5a9f2ede": {
@@ -17539,7 +17654,7 @@
     }
   },
   "schemaVersion": "3.0.0",
-  "updatedAt": "2019-01-27T20:35:03.727Z",
+  "updatedAt": "2019-01-27T21:16:58.806Z",
   "devdoc": {
     "methods": {}
   },
