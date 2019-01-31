@@ -29,7 +29,7 @@ contract TestGather {
 
     // any user on the platform can organize a gathering
     function testAddGathering() public {
-        string memory result = gather.organizeNewGathering("Potluck");
+        (uint count, string memory result) = gather.organizeNewGathering("Potluck");
         string memory expected = "Potluck";
 
         Assert.equal(result,  expected, "any user can organize a gathering");
@@ -37,7 +37,7 @@ contract TestGather {
 
     // the organizer of a gathering can change the name of the gathering
     function testSetGatheringName() public {
-        string memory result = gather.organizeNewGathering("Arisan");
+        (uint count, string memory result) = gather.organizeNewGathering("Arisan");
         string memory expected = "Arisan";
 
         Assert.equal(result,  expected, "user organized a new gathering with name Arisan");
